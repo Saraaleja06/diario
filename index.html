@@ -1,20 +1,8 @@
 <!--
-  ═══════════════════════════════════════════════════
   DIARIO TACHADO — para Wix
-  ═══════════════════════════════════════════════════
-
-  CÓMO INSERTAR EN WIX:
-  1. En el editor de Wix, haz clic en el botón "+".
-  2. Ve a "Código incrustado" > "Incrustar HTML".
-  3. Pega TODO este código en el campo de texto.
-  4. Ajusta la altura del bloque a mínimo 6000px.
-     Si el contenido queda cortado, aumenta la altura.
-  5. Activa "Allow scrolling" si Wix lo ofrece.
-
-  NOTA SOBRE LA MEMORIA DE VISITAS:
-  Usa localStorage para recordar cuántas veces una persona
-  abre la página desde el mismo navegador.
-  ═══════════════════════════════════════════════════
+  1. Clic en "+" > "Código incrustado" > "Incrustar HTML"
+  2. Pega todo este código
+  3. Altura del bloque: mínimo 5500px
 -->
 <!DOCTYPE html>
 <html lang="es">
@@ -22,28 +10,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>diario</title>
-
-<!-- Inconsolata: para fechas y metadatos únicamente -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400&display=swap" rel="stylesheet">
-
 <style>
-/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ── VARIABLES ── */
 :root {
   --bg:        #100f0d;
   --ink:       #f4eee6;
   --ink-dim:   #c8bdb0;
-  --ink-faint: #9b8e80;
+  --ink-faint: #5a5048;
   --rule:      #6f6256;
   --rule-soft: #3f3933;
   --accent:    #c08b63;
   --glitch:    #e07a59;
-  --serif:     'Courier New', Courier, monospace;  /* cuerpo principal */
-  --mono:      'Inconsolata', monospace;            /* fechas y metadatos */
+  --serif:     'Courier New', Courier, monospace;
+  --mono:      'Inconsolata', monospace;
 }
 
 html {
@@ -55,13 +38,12 @@ html {
 }
 
 body {
-  max-width: 700px;
+  max-width: 680px;
   margin: 0 auto;
   padding: 80px 34px 150px;
   position: relative;
 }
 
-/* ── TEXTURA DE FONDO ── */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -72,85 +54,91 @@ body::before {
 
 /* ── PORTADA ── */
 .cover {
-  min-height: 40vh;
+  min-height: 0px;
   display: flex; flex-direction: column; justify-content: flex-end;
-  padding-bottom: 64px;
-  border-bottom: 1.5px solid var(--rule);
-  margin-bottom: 80px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 72px;
 }
-
 .cover-title {
   font-family: var(--serif);
-  font-size: clamp(2rem, 6vw, 3.15rem);
-  font-weight: 400; font-style: normal;
+  font-size: clamp(1.9rem, 5.5vw, 3rem);
+  font-weight: 400;
   color: var(--ink);
   letter-spacing: -0.04em; line-height: 1.1;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 }
-
 .cover-struck {
-  text-decoration-line: line-through;
+  text-decoration: line-through;
   text-decoration-thickness: 2px;
   text-decoration-color: var(--ink-dim);
   text-decoration-skip-ink: none;
 }
-
 .cover-meta {
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--ink-dim);
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-dim);
 }
-
-/* mensaje de visita */
 #visit-line {
   font-family: var(--serif); font-style: italic;
-  font-size: 0.95rem; color: var(--ink-dim);
-  margin-top: 16px; opacity: 0;
+  font-size: 0.9rem; color: var(--ink-faint);
+  margin-top: 14px; opacity: 0;
   transition: opacity 1.8s ease;
 }
 #visit-line.show { opacity: 1; }
 
-/* ── BLOQUES Y ENTRADAS ── */
-.block { margin-bottom: 84px; }
+/* ── BLOQUES ── */
+.block { margin-bottom: 72px; }
 
+/* ── ENTRADAS ── */
 .entry {
-  margin-bottom: 56px; padding-bottom: 44px;
+  margin-bottom: 52px;
+  padding-bottom: 40px;
   border-bottom: 1px solid var(--rule-soft);
-  cursor: default; position: relative;
+  cursor: default;
+  position: relative;
 }
-.entry:last-child { border-bottom-color: var(--rule); }
+.entry:last-of-type { border-bottom: 1px solid var(--rule); }
 
-/* Inconsolata para fechas: contraste con el cuerpo en Courier */
 .entry-date {
-  font-family: var(--mono);
-  font-size: 11px; letter-spacing: 0.12em;
-  color: var(--ink-dim); margin-bottom: 20px;
-  display: block; transition: color .15s;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.12em; color: var(--ink-dim);
+  margin-bottom: 18px; display: block;
+  transition: color .15s;
 }
 .entry-date.glitching { color: var(--glitch); }
 
-.entry p { margin-bottom: 1em; font-size: 1rem; color: var(--ink); }
+.entry p { margin-bottom: .9em; font-size: 1rem; color: var(--ink); }
 .entry p:last-child { margin-bottom: 0; }
 
+/* entrada vacía: solo fecha y guión */
 .entry-gap {
-  margin-bottom: 56px; padding-bottom: 36px;
-  border-bottom: 1px dashed var(--rule);
-  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 52px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex; align-items: center; gap: 18px;
 }
 .entry-gap .entry-date { margin-bottom: 0; }
 .entry-gap .dash {
   font-family: var(--mono); color: var(--ink-faint);
-  font-size: 1.2rem; letter-spacing: 0.3em;
+  font-size: 1.1rem; letter-spacing: 0.3em;
 }
 
-/* ── HOVER: texto que se elude ──
-   bloque I = lento, bloque II = medio, bloque III = rápido */
+/* ── INTERACTIVIDAD 1: texto que se elude al hover ──
+   velocidad diferente por bloque temporal */
 .elude { transition: opacity 0.8s ease; }
 .block-i   .entry:hover .elude { opacity: 0; transition: opacity 1.2s ease; }
-.block-ii  .entry:hover .elude { opacity: 0; transition: opacity 0.6s ease; }
-.block-iii .entry:hover .elude { opacity: 0; transition: opacity 0.3s ease; }
+.block-ii  .entry:hover .elude { opacity: 0; transition: opacity 0.55s ease; }
+.block-iii .entry:hover .elude { opacity: 0; transition: opacity 0.25s ease; }
 
-/* timestamps fantasma */
+/* ── INTERACTIVIDAD 2: texto que aparece al hover (inverso al elude) ── */
+.emerge {
+  opacity: 0; transition: opacity 1s ease;
+  color: var(--ink-faint); font-style: italic;
+}
+.entry:hover .emerge { opacity: 1; }
+
+/* ── INTERACTIVIDAD 3: timestamps fantasma ── */
 .e-ts {
   font-family: var(--mono); font-size: 9px; font-style: italic;
   color: var(--ink-faint); opacity: 0;
@@ -159,51 +147,47 @@ body::before {
 }
 .e-ts.show { opacity: 1; }
 
-/* ── ENTRADA FANTASMA (aparece a los 58s de inactividad) ── */
+/* ── INTERACTIVIDAD 4: entrada fantasma (idle) ── */
 .ghost-entry {
   opacity: 0; max-height: 0; overflow: hidden;
   transition: opacity 1.8s ease, max-height 1.2s ease;
   pointer-events: none;
-  border-bottom: 1px dashed var(--rule); margin-bottom: 0;
 }
 .ghost-entry.reveal {
-  opacity: 1; max-height: 260px;
-  margin-bottom: 56px; padding-bottom: 36px;
+  opacity: 1; max-height: 220px;
+  margin-bottom: 52px; padding-bottom: 36px;
+  border-bottom: 1px solid var(--rule-soft);
 }
 .ghost-entry .entry-date { color: var(--ink-faint); }
 .ghost-entry p {
-  font-family: var(--serif); font-style: italic;
-  font-size: 1rem; color: var(--ink-faint); line-height: 1.8;
+  font-style: italic; font-size: 1rem;
+  color: var(--ink-faint); line-height: 1.8;
 }
 
-/* ── FRASE DE IDLE ── */
+/* ── INTERACTIVIDAD 5: frase de idle ── */
 #idle-phrase {
   font-family: var(--serif); font-style: italic;
-  font-size: 1rem; color: var(--ink-faint);
-  text-align: right; min-height: 1.8rem;
+  font-size: .95rem; color: var(--ink-faint);
+  text-align: right; min-height: 1.6rem;
   opacity: 0; transition: opacity 2s ease;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 #idle-phrase.show { opacity: 1; }
 
-/* ── CORRECCIÓN DE PALABRA (idle 18s) ── */
+/* ── INTERACTIVIDAD 6: corrección de palabra ── */
 .w-orig { transition: text-decoration .5s, color .6s; }
 .w-orig.struck { text-decoration: line-through; color: var(--ink-faint); }
 .w-new {
-  font-family: var(--serif); font-style: italic;
-  font-size: 1rem; opacity: 0;
+  font-style: italic; font-size: 1rem; opacity: 0;
   transition: opacity .8s .4s;
-  vertical-align: baseline; line-height: 1;
 }
 .w-new.show { opacity: 1; }
 
-/* ── TACHADO CON REVELACIÓN (idle 50s) ── */
+/* ── INTERACTIVIDAD 7: tachado con revelación ── */
 .s-target { transition: text-decoration .6s, color .6s; }
 .s-target.struck { text-decoration: line-through; color: var(--ink-faint); }
 .s-after {
-  display: none;
-  font-family: var(--serif); font-style: italic;
-  font-size: 1rem; line-height: 1;
+  display: none; font-style: italic; font-size: 1rem; line-height: 1;
 }
 .s-after.show {
   display: inline; opacity: 0;
@@ -211,58 +195,58 @@ body::before {
 }
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* ── ENTRADA INCOMPLETA (idle 75s) ── */
+/* ── INTERACTIVIDAD 8: entrada incompleta (idle tardío) ── */
 .incomplete-entry {
   opacity: 0; max-height: 0; overflow: hidden;
   transition: opacity 2s ease, max-height 1s ease;
-  margin-bottom: 56px;
-  border-bottom: 1px dashed var(--rule);
+  margin-bottom: 52px;
 }
 .incomplete-entry.reveal {
-  opacity: 1; max-height: 140px; padding-bottom: 36px;
+  opacity: 1; max-height: 120px; padding-bottom: 36px;
+  border-bottom: 1px solid var(--rule-soft);
 }
 .incomplete-entry .entry-date { color: var(--ink-faint); }
 .incomplete-entry p {
-  font-family: var(--serif); font-style: italic;
-  font-size: 1rem; color: var(--ink-faint); line-height: 1.8;
+  font-style: italic; font-size: 1rem;
+  color: var(--ink-faint); line-height: 1.8;
 }
 
-/* ── CONTENIDO BLOQUEADO POR VISITA ──
-   .v2 = 2da visita / .v3 = 3ra visita */
+/* ── INTERACTIVIDAD 9: contenido por visita ── */
 .v2, .v3 {
   opacity: 0; max-height: 0; overflow: hidden;
   transition: opacity 1.8s ease, max-height 1s ease;
 }
-.v2.unlock, .v3.unlock { opacity: 1; max-height: 600px; }
+.v2.unlock, .v3.unlock { opacity: 1; max-height: 500px; }
 
 .v2 p, #v2-apr, #v2-may {
-  font-family: var(--serif); font-style: italic;
-  font-size: 1rem; line-height: 1.8; color: var(--ink-dim);
+  font-style: italic; font-size: 1rem;
+  line-height: 1.8; color: var(--ink-dim);
 }
 
-/* línea final que se tacha en la 3ra visita */
 #final-line { transition: text-decoration .9s ease, color .9s ease; }
 #final-line.struck { text-decoration: line-through; color: var(--ink-faint); }
 
-/* adición de la 3ra visita */
 #v3-addition {
   opacity: 0; max-height: 0; overflow: hidden;
   transition: opacity 2s 1s ease, max-height .8s ease;
 }
 #v3-addition.show { opacity: 1; max-height: 400px; }
 #v3-addition p {
-  font-family: var(--serif); font-style: italic;
-  font-size: 1rem; color: var(--ink-dim);
-  line-height: 1.8; margin-top: .6em;
+  font-style: italic; font-size: 1rem;
+  color: var(--ink-dim); line-height: 1.8; margin-top: .5em;
 }
 
 /* ── DIVISORES ── */
-.block-divider { border: none; border-top: 1.5px solid var(--rule); margin: 84px 0; }
+.block-divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 72px 0;
+}
 
-/* ── ANIMACIÓN DE SCROLL ── */
+/* ── SCROLL ── */
 @media (prefers-reduced-motion: no-preference) {
   .entry {
-    opacity: 0; transform: translateY(12px);
+    opacity: 0; transform: translateY(10px);
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
   .entry.visible { opacity: 1; transform: translateY(0); }
@@ -273,64 +257,48 @@ body::before {
 </head>
 <body>
 
-<!-- PORTADA -->
 <div class="cover">
   <h1 class="cover-title"><span class="cover-struck">diario</span></h1>
   <p class="cover-meta">marzo 2019 — octubre 2022</p>
   <div id="visit-line"></div>
 </div>
 
-<!-- BLOQUE I: 2019 -->
+<!-- BLOQUE I -->
 <div class="block block-i">
 
   <div class="entry">
     <time class="entry-date" data-orig="14 de marzo, 2019" data-glitch="15 de marzo, 2020">14 de marzo, 2019</time><span class="e-ts" id="ts-1"></span>
     <p>Hoy volví del hospital con un objeto en el bolsillo.</p>
-    <p>No sé bien cómo pasó. <span class="elude"><span class="s-target" id="s1">No fue una escena importante. No hubo una frase bonita ni nada parecido.</span><span class="s-after" id="sa1">Lo recibí porque no supe decir que no.</span></span> Él estaba sentado en la cama, con la espalda un poco doblada y las manos encima de la cobija. Yo estaba junto a la ventana, mirando los carros desde arriba, tratando de no mirar la bolsa de suero, ni la bandeja con vasos plásticos, ni la forma en que todo el cuarto parecía hecho para esperar.</p>
-    <p>Me dijo que abriera el cajón de la mesa de noche. Lo hice. Había pañuelos, una crema, una chocolatina empezada, papeles doblados, monedas y eso. Estaba al fondo, metido entre cosas que no tenían nada que ver entre sí.</p>
-    <p>"Llévatelo", dijo.</p>
-    <p>Le pregunté qué era. Creo que no porque quisiera saber, sino porque no supe qué más decir. Él se encogió de hombros. Dijo que ahí le estorbaba. Que en el hospital todo estorbaba. Lo dijo normal, como si hablara de una silla mal puesta.</p>
-    <p>Lo guardé en el bolsillo de la chaqueta y no volví a tocarlo hasta llegar a la casa.</p>
-    <p>Cuando entré a mi cuarto, lo puse sobre el escritorio. Ahí quedó. No lo miré directamente, pero supe todo el tiempo que estaba ahí. Desde la cama podía ver una esquina. Nada más una esquina.</p>
-    <p>Suficiente.</p>
+    <p><span class="elude"><span class="s-target" id="s1">No fue una escena importante. No hubo ninguna frase.</span><span class="s-after" id="sa1"> Lo recibí porque no supe decir que no.</span></span> Él estaba sentado en la cama con las manos encima de la cobija. Me dijo que abriera el cajón de la mesa de noche.</p>
+    <p>Lo hice. Había pañuelos, una chocolatina empezada, monedas. Y eso, al fondo.</p>
+    <p>"Llévatelo", dijo. Le pregunté qué era. Se encogió de hombros. Dijo que ahí le estorbaba. Que en el hospital todo estorbaba.</p>
+    <p>Lo guardé en el bolsillo y no volví a tocarlo hasta llegar a la casa. Lo puse sobre el escritorio. Desde la cama podía ver una esquina. Nada más una esquina. <span class="emerge">Suficiente.</span></p>
   </div>
 
   <div class="entry">
     <time class="entry-date" data-orig="2 de abril, 2019" data-glitch="2 de abril, 2018">2 de abril, 2019</time><span class="e-ts" id="ts-2"></span>
-    <p>Mamá dice que hay que ser positivas.</p>
-    <p>Yo intento.</p>
-    <p><span class="elude">A veces funciona y a veces me parece la cosa más <span class="w-orig" id="wo">agotadora</span><span class="w-new" id="wn"> imposible</span> del mundo. Ser positiva cuando todo en la casa huele a esfuerzo.</span> Esta semana no fui a clases dos días. Nadie preguntó demasiado. Creo que todos estamos aprendiendo a no preguntar cosas cuya respuesta puede dejar la casa peor.</p>
-    <p>El objeto sigue sobre el escritorio. No sé por qué no lo he guardado. Tampoco sé por qué no lo he devuelto. Él no ha vuelto a preguntarme por eso. A veces pienso que no se acuerda de habérmelo dado. A veces pienso que sí se acuerda y por eso no dice nada.</p>
-    <p>Hay algo raro en tenerlo en el cuarto. No lo miro, pero sé que está. Tiene una presencia rara, como los objetos que han sido muy usados por alguien y después quedan sin dueño claro.</p>
-    <p>No sé para qué servía. No sé si servía para algo.</p>
-    <!-- visible desde la 2da visita -->
-    <p class="v2" id="v2-apr">Lo toqué esta mañana antes de salir. Solo un segundo. Tenía la temperatura exacta de la habitación. No sé por qué eso me incomodó tanto.</p>
+    <p>Mamá dice que hay que ser positivas. Yo intento. <span class="elude">A veces me parece la cosa más <span class="w-orig" id="wo">agotadora</span><span class="w-new" id="wn"> imposible</span> del mundo.</span> Esta semana no fui a clases dos días. Nadie preguntó demasiado.</p>
+    <p>El objeto sigue sobre el escritorio. No sé para qué servía. No sé si servía para algo.</p>
+    <p class="v2" id="v2-apr">Lo toqué esta mañana antes de salir. Tenía la temperatura exacta de la habitación. No sé por qué eso me incomodó.</p>
   </div>
 
   <div class="entry">
     <time class="entry-date" data-orig="19 de junio, 2019" data-glitch="19 de junio, 2019">19 de junio, 2019</time><span class="e-ts" id="ts-3"></span>
-    <p>La casa huele diferente ahora.</p>
-    <p>No sé desde cuándo empecé a notarlo. No es solo olor a remedio, ni a comida recalentada, ni a ropa que tarda demasiado en secarse. <span class="elude">Es otra cosa. Como si todo estuviera siendo usado de más.</span></p>
-    <p>Las cobijas de la sala. Los vasos del baño. El aire de los cuartos cerrados. Todo parece estar cumpliendo una función que nadie escogió.</p>
-    <p>Hoy moví el objeto del escritorio al clóset. No porque me molestara. O sí. No sé.</p>
-    <p>Lo puse en el estante de arriba, detrás de una caja de zapatos. Me subí en una silla para dejarlo bien al fondo. En ese lugar donde una guarda cosas que no quiere botar todavía.</p>
-    <p>No lo boté.</p>
-    <p><span class="elude">Pensé en hacerlo, pero no pude. No porque sea importante. No sé si es importante. Creo que me dio miedo que botarlo significara algo. Y guardarlo también.</span></p>
-    <p>Al final hice lo mismo de siempre.</p>
-    <p>Lo dejé ahí.</p>
+    <p>La casa huele diferente. <span class="elude">Como si todo estuviera siendo usado de más.</span> Las cobijas de la sala. Los vasos del baño. El aire.</p>
+    <p>Hoy moví el objeto al clóset. Lo puse detrás de una caja de zapatos, bien al fondo.</p>
+    <p>No lo boté. <span class="elude">Me dio miedo que botarlo significara algo. Y guardarlo también.</span> Al final hice lo mismo de siempre.</p>
   </div>
 
 </div>
 
 <hr class="block-divider">
 
-<!-- BLOQUE II: 2020-2021 -->
+<!-- BLOQUE II -->
 <div class="block block-ii">
 
-  <!-- entrada fantasma: aparece a los 58s de inactividad -->
   <div class="ghost-entry" id="ghost-feb">
     <time class="entry-date">3 de febrero, 2020</time>
-    <p>Lo saqué. Lo sostuve en las dos manos. Me pareció más pesado. Tal vez no. Tal vez yo estaba más cansada. Lo guardé otra vez. Sin mirarlo mucho.</p>
+    <p>Lo saqué. Lo sostuve en las dos manos. Me pareció más pesado. Tal vez yo estaba más cansada. Lo guardé sin mirarlo mucho.</p>
   </div>
 
   <div class="entry-gap">
@@ -340,108 +308,64 @@ body::before {
 
   <div class="entry">
     <time class="entry-date" data-orig="17 de agosto, 2020" data-glitch="17 de agosto, 2021">17 de agosto, 2020</time><span class="e-ts" id="ts-5"></span>
-    <p>Llevamos más de un año así.</p>
-    <p>Ya no le digo a nadie cómo estoy cuando me preguntan. Digo "bien, ahí" y cambio el tema antes de que puedan preguntar más. <span class="elude">Creo que aprendí eso en la casa. De mamá. De él. De todos. Cada quien tiene su manera de fingir que todavía sabe qué hacer.</span></p>
-    <p>Hoy encontré el objeto mientras buscaba un suéter. No recordaba haberlo puesto tan cerca. Pensé que estaba más al fondo, detrás de las cajas, donde no se ve nada sin sacar medio clóset. Pero estaba ahí, junto a una bufanda que casi nunca uso.</p>
-    <p>Lo tuve en la mano un momento. Me marcó la palma. No fuerte. Apenas una presión. Pero cuando lo solté, seguí sintiendo la forma.</p>
-    <p>Eso me dio rabia.</p>
-    <p>Lo volví a guardar. Más atrás.</p>
-    <p>Esta vez puse ropa encima.</p>
+    <p>Llevamos más de un año así. <span class="elude">Ya no le digo a nadie cómo estoy. Digo "bien, ahí" y cambio el tema. Creo que aprendí eso acá.</span></p>
+    <p>Hoy encontré el objeto mientras buscaba un suéter. Lo tuve en la mano un momento. Me marcó la palma. Cuando lo solté, seguí sintiendo la forma.</p>
+    <p>Eso me dio rabia. Lo volví a guardar. Esta vez puse ropa encima.</p>
   </div>
 
   <div class="entry">
     <time class="entry-date" data-orig="5 de mayo, 2021" data-glitch="5 de mayo, 2022">5 de mayo, 2021</time><span class="e-ts" id="ts-6"></span>
-    <p>Pienso mucho en irme.</p>
-    <p>Conseguir un apartamento, vivir sola, empezar desde cero en un lugar donde los objetos sean solo míos y el aire no tenga historia. Cuando era adolescente, vivir sola me parecía una especie de jardín del Edén. Nadie diciéndome qué hacer. Nadie cerrando una pelea con "esta es mi casa". Nadie respirando tristeza al otro lado de una puerta.</p>
-    <p>Ahora la idea me emociona y me da culpa.</p>
-    <p>A veces al mismo tiempo.</p>
-    <p><span class="elude">¿Cómo se va una cuando todo está sin terminar? ¿Cómo se empaca una vida propia sin sentir que está dejando la vida de los demás tirada en la sala?</span></p>
-    <p>Hay días en que la casa entera se siente como ese objeto. Sin lugar claro donde ponerla.</p>
-    <!-- visible desde la 2da visita -->
+    <p>Pienso mucho en irme. <span class="elude">¿Cómo se va una cuando todo está sin terminar? ¿Cómo se empaca una vida propia sin sentir que está dejando la de los demás tirada en la sala?</span></p>
+    <p>Hay días en que la casa entera se siente sin lugar claro donde ponerla.</p>
     <p class="v2" id="v2-may">Hay días en que yo también.</p>
   </div>
 
   <div class="entry">
     <time class="entry-date">12 de diciembre, 2021</time>
-    <p style="color: var(--accent); opacity: 0.85; font-family: var(--mono);">El peor diciembre.</p>
-    <p>No quiero escribirlo.</p>
-    <p>Si lo escribo, queda. Si queda, voy a tener que leerlo algún día. Y si lo leo, voy a tener que aceptar que pasó justo en el mes en que todo el mundo insiste en encender luces.</p>
-    <p>La casa estuvo llena de gente y, aun así, nunca se sintió tan vacía. Hubo bandejas de comida, bolsas negras, llamadas, abrazos raros, ropa que nadie sabía si lavar o guardar. Mamá repetía frases prácticas, una detrás de otra. Como si ordenar papeles fuera una forma de no caerse.</p>
-    <p>Yo no lloré cuando pensé que tenía que llorar.</p>
+    <p style="color: var(--accent); font-family: var(--mono);">El peor diciembre.</p>
+    <p>No quiero escribirlo. Si lo escribo, queda.</p>
+    <p>La casa estuvo llena de gente y nunca se sintió tan vacía. Mamá repetía frases prácticas, una detrás de otra. Yo no lloré cuando pensé que tenía que llorar.</p>
     <p>Lloré después, buscando una media debajo de la cama.</p>
-    <p>Esa noche abrí el clóset y saqué el objeto. No sé por qué. Tal vez quería comprobar que seguía ahí. Tal vez quería enojarme con algo.</p>
-    <p>Lo puse sobre el piso y me senté frente a él.</p>
-    <p>No hizo nada.</p>
-    <p>Eso fue lo peor.</p>
+    <p>Esa noche saqué el objeto y lo puse sobre el piso frente a mí. <span class="emerge">No hizo nada. Eso fue lo peor.</span></p>
   </div>
 
 </div>
 
 <hr class="block-divider">
 
-<!-- BLOQUE III: 2022 -->
+<!-- BLOQUE III -->
 <div class="block block-iii">
 
   <div class="entry">
     <time class="entry-date">20 de enero, 2022</time>
     <p>Hoy empezamos a guardar sus cosas.</p>
-    <p>No todas. Algunas. Las que estaban a la vista. Las que estorbaban porque ya nadie sabía cómo pasar junto a ellas sin cambiar la cara.</p>
-    <p>Una camisa doblada en una bolsa. Un reloj sin pila. Unas gafas en un estuche duro. Papeles que parecían importantes solo porque tenían sellos.</p>
-    <p>Todo encontró una caja con nombre.</p>
-    <p>Esto no.</p>
-    <p>El objeto no pertenece a ninguna parte. No es ropa. No es documento. No es recuerdo familiar. No es algo útil. Tampoco es basura. Si lo pongo con sus cosas, parece una reliquia. Si lo pongo con las mías, parece una decisión. Si lo dejo donde está, parece que me gana.</p>
-    <p>Lo envolví en una camiseta vieja y lo guardé otra vez en el clóset.</p>
-    <p>No marqué la bolsa.</p>
-    <p>A veces no escribir el nombre de algo ayuda.</p>
-    <p>No lo soluciona, pero ayuda.</p>
+    <p>Una camisa doblada en una bolsa. Un reloj sin pila. Papeles que parecían importantes solo porque tenían sellos. Todo encontró una caja con nombre.</p>
+    <p>Esto no. El objeto no pertenece a ninguna parte. <span class="elude">Si lo pongo con sus cosas, parece una reliquia. Si lo pongo con las mías, parece una decisión.</span></p>
+    <p>Lo envolví en una camiseta vieja. No marqué la bolsa.</p>
   </div>
 
   <div class="entry">
     <time class="entry-date" data-orig="8 de septiembre, 2022" data-glitch="9 de septiembre, 2022">8 de septiembre, 2022</time><span class="e-ts" id="ts-8"></span>
-    <p>Encontré apartamento.</p>
-    <p>Firmo el mes que viene.</p>
-    <p><span class="elude">Estoy aterrada y aliviada. No sé qué pesa más.</span> Mamá me ayudó a buscar. Fuimos juntas a verlo. Medimos los cuartos con los brazos extendidos, como si eso sirviera para imaginar una vida. La cocina es pequeña, pero entra una mesa. El cuarto tiene una ventana que da a otro edificio. No es bonito, pero va a ser mío.</p>
-    <p>Por un tiempo.</p>
-    <p>No hablamos de lo que significa que me vaya. Creo que las dos preferimos no hacerlo todavía.</p>
-    <p>Empecé a separar cosas. Qué me llevo, qué dejo. Lo fácil se decide rápido. Los libros. La ropa. Los platos. Las cobijas. Lo difícil se queda quieto, esperando a que una lo encuentre.</p>
-    <p>Pensé en el objeto mientras compraba cinta.</p>
-    <p>No lo he sacado.</p>
-    <p>Sé dónde está.</p>
-    <p>Eso no quiere decir que quiera encontrarlo.</p>
+    <p>Encontré apartamento. Firmo el mes que viene. <span class="elude">Estoy aterrada y aliviada. No sé qué pesa más.</span></p>
+    <p>Fuimos juntas a verlo. Medimos los cuartos con los brazos extendidos. La cocina es pequeña pero entra una mesa. No hablamos de lo que significa que me vaya.</p>
+    <p>Pensé en el objeto mientras compraba cinta. Sé dónde está. Eso no quiere decir que quiera encontrarlo.</p>
   </div>
 
-  <!-- visible desde la 2da visita -->
   <div class="entry v2" id="v2-entry">
     <time class="entry-date">22 de septiembre, 2022</time>
     <p>Creo que lo traje antes de traerlo.</p>
-    <p>No sé cómo explicar eso.</p>
-    <p>Todavía está en el clóset de la casa, envuelto en la camiseta vieja, detrás de una caja de zapatos. Eso lo sé. Pero hoy entré al apartamento vacío y, por un segundo, sentí que ya estaba ahí.</p>
-    <p>No visible. No en el piso. No en una esquina.</p>
-    <p>Pero sí ahí.</p>
-    <p>Me quedé parada en la mitad del cuarto, con las llaves en la mano. No había cama. No había cajas. No había ruido. Solo polvo, olor a pintura y esa sensación de que algo ya estaba ocupando espacio.</p>
-    <p>Creo que una no se lleva solo cajas. También se lleva maneras de cerrar puertas. Frases que juró no repetir. Cosas que no sabe dónde poner.</p>
-    <p>No había nada en el apartamento.</p>
+    <p>Hoy entré al apartamento vacío y sentí que ya estaba ahí. No visible. No en el piso. Pero ahí. Me quedé parada en la mitad del cuarto con las llaves en la mano.</p>
     <p>Igual algo pesaba.</p>
   </div>
 
   <div class="entry">
     <time class="entry-date" data-orig="3 de octubre, 2022" data-glitch="3 de octubre, 2021">3 de octubre, 2022</time><span class="e-ts" id="ts-9"></span>
-    <p>Hoy empecé a empacar el clóset.</p>
-    <p>Lo postergué todo lo que pude porque sabía que iba a encontrarlo. O porque quería fingir que no sabía. Saqué sacos, jeans, vestidos que no uso, una bufanda con motas, bolsas con bolsas adentro, zapatos que todavía guardo "por si acaso".</p>
-    <p>El clóset se fue vaciando de a pocos, pero el fondo parecía no acercarse nunca.</p>
-    <p>Cuando por fin lo vi, no sentí sorpresa.</p>
-    <p>Eso me dio rabia.</p>
-    <p>Estaba donde lo dejé, detrás de la caja de zapatos, envuelto en la camiseta vieja. Lo desenvolví despacio.</p>
-    <p>Lo sostuve con las dos manos.</p>
-    <p>Me pareció absurdo que algo así pudiera cansarme tanto.</p>
-    <p><span class="elude">Por un momento pensé en dejarlo ahí. Que se quedara en la casa. Que alguien más lo encontrara algún día y preguntara qué era. Que mamá dijera "no sé", aunque sí supiera. Que el objeto pasara a ser una cosa perdida.</span></p>
-    <p>Después pensé en botarlo.</p>
-    <p>No lo hice.</p>
-    <p>Lo puse en una caja sin marcar, debajo de una sudadera y dos pares de medias. No encima. No visible. No como algo importante. Al fondo, donde las cosas parecen menos reales.</p>
-    <p>Como si no saber exactamente dónde está fuera distinto a llevarlo conmigo.</p>
+    <p>Hoy empecé a empacar el clóset. Lo postergué porque sabía lo que iba a encontrar.</p>
+    <p>Cuando por fin lo vi, no sentí sorpresa. Eso me dio rabia. Lo sostuve con las dos manos. Me pareció absurdo que algo así pudiera cansarme tanto.</p>
+    <p><span class="elude">Por un momento pensé en dejarlo. Que se quedara en la casa. Que mamá dijera "no sé" cuando alguien preguntara.</span></p>
+    <p>No lo hice. Lo puse en una caja sin marcar, al fondo, debajo de todo. Como si no saber exactamente dónde está fuera distinto a llevarlo conmigo.</p>
   </div>
 
-  <!-- entrada incompleta: aparece a los 75s de inactividad -->
   <div class="incomplete-entry" id="incomplete">
     <time class="entry-date">__ de __________, 2022</time>
     <p>[sin guardar]</p>
@@ -450,37 +374,23 @@ body::before {
   <div class="entry">
     <time class="entry-date" data-orig="13 de octubre, 2022" data-glitch="14 de octubre, 2022">13 de octubre, 2022</time><span class="e-ts" id="ts-10"></span>
     <p>Mañana me voy.</p>
-    <p>Debería estar emocionada. A ratos lo estoy. A ratos solo estoy cansada. No cansada de cargar cajas. Otro cansancio.</p>
-    <p>El apartamento está casi listo. Las cajas forman una pared pequeña junto a la puerta. Algunas dicen "cocina", "baño", "libros". Otras no dicen nada.</p>
-    <p>Esas son las peores.</p>
-    <p>Revisé tres veces que todo estuviera empacado. Fui a la sala, a la cocina, al baño. Abrí cajones que ya sabía vacíos. Miré debajo de la cama. Toqué las paredes como si fueran a decirme si olvidaba algo.</p>
-    <p>No sé si estoy lista.</p>
-    <p>Creo que nadie está lista para irse de una casa.</p>
-    <p>Una solo se va.</p>
-    <p>La caja sin marcar está cerrada.</p>
-    <!-- esta línea se tacha en la 3ra visita -->
+    <p>Las cajas forman una pared junto a la puerta. Algunas dicen "cocina", "libros". Otras no dicen nada. Esas son las peores.</p>
+    <p>No sé si estoy lista. Creo que nadie está lista para irse de una casa. Una solo se va.</p>
     <p id="final-line">Lo que está adentro se queda adentro. Al menos por un tiempo.</p>
-    <!-- aparece en la 3ra visita -->
     <div id="v3-addition">
       <p>14 de octubre, 2022</p>
       <p>No sé por qué abrí la caja.</p>
-      <p>Tal vez porque sabía.</p>
-      <p>El objeto estaba ahí, debajo de la sudadera, exactamente donde lo había dejado. Lo saqué y lo puse sobre el piso vacío del cuarto. El apartamento nuevo todavía olía a pintura, a polvo, a lugar sin costumbre.</p>
-      <p>Por un segundo, el objeto pareció más viejo que todo lo demás.</p>
-      <p>Pensé en tirarlo por el ducto de basuras. Pensé en dejarlo en la calle. Pensé en enterrarlo en una matera. Pensé en devolverlo, aunque ya no hubiera a quién.</p>
-      <p>No hice nada de eso.</p>
-      <p>Después lo envolví otra vez. Abrí la caja. Lo puse al fondo, debajo de todo.</p>
+      <p>Saqué el objeto y lo puse sobre el piso vacío del cuarto nuevo. Pensé en tirarlo, dejarlo en la calle, devolverlo aunque ya no hubiera a quién.</p>
+      <p>No hice nada de eso. Lo envolví otra vez. Lo puse al fondo, debajo de todo.</p>
       <p>No marqué la caja.</p>
     </div>
   </div>
 
 </div>
 
-<!-- frase de idle -->
 <div id="idle-phrase"></div>
 
 <script>
-/* ── MEMORIA DE VISITAS ── */
 const KEY_VISITS = 'diario-tachado-visits';
 let visits = parseInt(localStorage.getItem(KEY_VISITS) || '0') + 1;
 localStorage.setItem(KEY_VISITS, visits);
@@ -493,7 +403,6 @@ const S = {
   phraseIndex: 0,
 };
 
-/* frases de inactividad: rotan cada 16s */
 const IDLE_PHRASES = [
   'sigues aquí.',
   'todavía leyendo.',
@@ -503,7 +412,6 @@ const IDLE_PHRASES = [
   'ella también se quedaba mirando así.',
 ];
 
-/* mensaje en portada según visita */
 (function initCoverMsg() {
   const line = document.getElementById('visit-line');
   const msgs = { 2: 'ya estuviste aquí.', 3: 'el archivo lo recuerda.' };
@@ -513,7 +421,6 @@ const IDLE_PHRASES = [
   setTimeout(() => line.classList.add('show'), 1200);
 })();
 
-/* desbloqueo por visita */
 function applyVisitGates() {
   if (visits >= 2) {
     document.querySelectorAll('.v2').forEach(el => {
@@ -529,7 +436,6 @@ function applyVisitGates() {
   }
 }
 
-/* animación de scroll */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((e, i) => {
     if (e.isIntersecting) {
@@ -540,7 +446,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.entry, .entry-gap').forEach(el => observer.observe(el));
 
-/* glitch de fechas */
 function startGlitch() {
   const candidates = Array.from(document.querySelectorAll('[data-glitch]'))
     .filter(el => el.dataset.orig !== el.dataset.glitch);
@@ -574,14 +479,12 @@ function startGlitch() {
   }
 
   function schedule() {
-    const t = setTimeout(fire, 5500 + Math.random() * 9000);
-    S.timers.push(t);
+    S.timers.push(setTimeout(fire, 5500 + Math.random() * 9000));
   }
 
   S.timers.push(setTimeout(fire, 8000 + Math.random() * 6000));
 }
 
-/* timestamps fantasma */
 function startTimestamps() {
   const tsList = Array.from(document.querySelectorAll('.e-ts'));
   const pool = [1, 2, 3, 5, 7, 11, 17, 23, 31, 47];
@@ -610,13 +513,9 @@ function resetAct() { S.lastAct = Date.now(); }
 function setPhrase(ip, text) {
   ip.style.transition = 'opacity .6s ease';
   ip.style.opacity = '0';
-  setTimeout(() => {
-    ip.textContent = text;
-    ip.style.opacity = '1';
-  }, 650);
+  setTimeout(() => { ip.textContent = text; ip.style.opacity = '1'; }, 650);
 }
 
-/* detección de permanencia */
 function startIdle() {
   ['mousemove', 'scroll', 'keydown', 'click', 'touchstart']
     .forEach(ev => document.addEventListener(ev, resetAct, { passive: true }));
@@ -626,7 +525,6 @@ function startIdle() {
     const ip = document.getElementById('idle-phrase');
     if (!ip) return;
 
-    /* 9s — primera frase */
     if (idle >= 9 && !S.idle.phrase) {
       S.idle.phrase = true;
       ip.classList.add('show');
@@ -634,7 +532,6 @@ function startIdle() {
       S.phraseIndex = 0;
     }
 
-    /* cada 16s adicional — siguiente frase */
     if (S.idle.phrase) {
       const expectedIndex = Math.min(Math.floor((idle - 9) / 16), IDLE_PHRASES.length - 1);
       if (expectedIndex > S.phraseIndex) {
@@ -643,27 +540,23 @@ function startIdle() {
       }
     }
 
-    /* 18s — corrección de palabra */
     if (idle >= 18 && !S.idle.word) {
       S.idle.word = true;
       setTimeout(() => document.getElementById('wo').classList.add('struck'), 300);
       setTimeout(() => document.getElementById('wn').classList.add('show'), 900);
     }
 
-    /* 50s — tachado en primera entrada */
     if (idle >= 50 && !S.idle.strike) {
       S.idle.strike = true;
       setTimeout(() => document.getElementById('s1').classList.add('struck'), 300);
       setTimeout(() => document.getElementById('sa1').classList.add('show'), 1000);
     }
 
-    /* 58s — entrada fantasma del 3 de febrero */
     if (idle >= 58 && !S.idle.ghost) {
       S.idle.ghost = true;
       document.getElementById('ghost-feb').classList.add('reveal');
     }
 
-    /* 75s — entrada incompleta sin fecha */
     if (idle >= 75 && !S.idle.incomplete) {
       S.idle.incomplete = true;
       document.getElementById('incomplete').classList.add('reveal');
@@ -671,7 +564,6 @@ function startIdle() {
   }, 500);
 }
 
-/* arranque */
 applyVisitGates();
 startGlitch();
 startTimestamps();
